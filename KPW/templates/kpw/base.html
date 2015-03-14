@@ -1,0 +1,59 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Fuzzy sematic">
+    <meta name="author" content="Kamil Mówiński">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+
+    <title>{% trans 'Fuzzy logic' %}{% block title %}{% endblock %}</title>
+
+    <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/cover.css' %}" rel="stylesheet">
+    {% block headers %}{% endblock %}
+</head>
+
+<body>
+
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">{% trans 'Search engine' %}</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#">{% trans 'Home' %}</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover">
+                {% block content %}{% endblock %}
+            </div>
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <p>{% trans 'Copyright by Kamil Mówiński' %}</p>
+                    <p>
+                        Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by
+                        <a ref="https://twitter.com/mdo">@mdo</a>.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

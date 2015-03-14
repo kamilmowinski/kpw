@@ -1,0 +1,24 @@
+{% extends 'kpw/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <h1 class="cover-heading">{% trans 'Search engine' %}</h1>
+
+    <div class="lead">
+        <form method="get" action="{% url 'search' %}">
+            <div class="input-group">
+                <input type="search" name="q" class="form-control" placeholder="{% trans 'Search for' %}..." />
+                <span class="input-group-btn">
+                    <input class="btn btn-default" type="submit" value="{% trans 'Search' %}" />
+                </span>
+            </div>
+        </form>
+    </div>
+    {% if query_list %}
+        <div class="lead">
+            {% for synset in query_list %}
+            <p>{{ synset.0 }}: {{ synset.1 }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

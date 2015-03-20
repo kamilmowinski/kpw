@@ -14,10 +14,15 @@
             </div>
         </form>
     </div>
-    {% if query_list %}
+    {% if query_object %}
         <div class="lead">
-            {% for synset in query_list %}
-            <p>{{ synset.0 }}: {{ synset.1 }}</p>
+            {% for synset in query_object %}
+                <div>
+                    <a href="{% url 'redirect' synset.uri %}" target="_blank">{{ synset.title }}</a>
+                    {% for key_word in synset.key_words %}
+                        <p>{{ key_word }}</p>
+                    {% endfor %}
+                </div>
             {% endfor %}
         </div>
     {% endif %}

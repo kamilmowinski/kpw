@@ -56,3 +56,4 @@ target/
 
 # Bower
 components/*
+.idea/*

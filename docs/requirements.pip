@@ -3,3 +3,6 @@ django-bower==5.0.2
 six==1.9.0
 nltk==3.0.1
 requests==2.6.0
+-e git+https://github.com/django-nonrel/django@nonrel-1.5
+-e git+https://github.com/django-nonrel/djangotoolbox
+-e git+https://github.com/django-nonrel/mongodb-engine

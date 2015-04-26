@@ -1,11 +1,11 @@
 from django.http import HttpResponseRedirect
-
-__author__ = 'Kamil Mówiński'
 from pydoc import locate
 
 from django.views.generic import TemplateView, View
 from django.conf import settings
 from nltk.corpus import wordnet as wn
+
+from .models import Statistic
 
 
 class HomePage(TemplateView):
@@ -21,21 +21,35 @@ class SearchView(TemplateView):
         q = self.request.GET.get('q', None)
         if q:
             queries = self.get_another_query(q)
-            result = self.search_engine().query(queries)
-            ctx['query_object'] = sorted(result,
-                                         key=lambda x: x.probability)
+            results = self.search_engine().query(queries)
+            ctx['query_object'] = self.sort_query(results)
+            ctx['query'] = q
         return ctx
 
     def get_another_query(self, q):
-        synsets = wn.synsets(q, pos=wn.NOUN)
         ret = list()
-        for synset in synsets:
-            ret.append(synset.name())
+        for query in q.split(' '):
+            synsets = wn.synsets(query, pos=wn.NOUN)
+            for synset in synsets:
+                ret.append(synset.name())
+        ret += q.split(' ')
         return ret
+
+    def sort_query(self, results):
+        #urls = map(lambda x: x.uri, results)
+        #stats = Statistic.objects.filter(
+        #    url__in=urls, user=self.request.user)
+        return results
 
 
 class RedirectView(View):
-    def get(self, request, *args, **kwargs):
-        url = kwargs.get('url', None)
+    def post(self, request, *args, **kwargs):
+        url = request.POST.get('uri', None)
+        query = request.POST.get('query', None)
         if url:
+            if request.user.is_authenticated():
+                stat = Statistic.objects.get_or_create(
+                    url=url, searched=query, user=request.user)[0]
+                stat.count += 1
+                stat.save()
             return HttpResponseRedirect(url)

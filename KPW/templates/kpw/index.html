@@ -7,7 +7,7 @@
     <div class="lead">
         <form method="get" action="{% url 'search' %}">
             <div class="input-group">
-                <input type="search" name="q" class="form-control" placeholder="{% trans 'Search for' %}..." />
+                <input type="search" name="q" class="form-control" placeholder="{% trans 'Search for' %}..." {% if query %}value="{{ query }}"{% endif %}/>
                 <span class="input-group-btn">
                     <input class="btn btn-default" type="submit" value="{% trans 'Search' %}" />
                 </span>
@@ -18,10 +18,15 @@
         <div class="lead">
             {% for synset in query_object %}
                 <div>
-                    <a href="{% url 'redirect' synset.uri %}" target="_blank">{{ synset.title }}</a>
-                    {% for key_word in synset.key_words %}
-                        <p>{{ key_word }}</p>
-                    {% endfor %}
+                    <form method="post" action="{% url 'redirect' %}" target="_blank">
+                        {% csrf_token %}
+                        <input type="hidden" name="uri" value="{{ synset.uri }}" />
+                        <input type="hidden" name="query" value="{{ query }}" />
+                        <button type="submit" class="btn btn-link">{{ synset.title }}</button>
+                        {% for key_word in synset.key_words %}
+                            <p>{{ key_word }}</p>
+                        {% endfor %}
+                    </form>
                 </div>
             {% endfor %}
         </div>

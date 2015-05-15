@@ -19,6 +19,8 @@ class SearchView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super(SearchView, self).get_context_data(**kwargs)
         q = self.request.GET.get('q', None)
+        print q
+
         if q:
             queries = self.get_another_query(q)
             results = self.search_engine().query(queries)
@@ -31,6 +33,7 @@ class SearchView(TemplateView):
         for query in q.split(' '):
             synsets = wn.synsets(query, pos=wn.NOUN)
             for synset in synsets:
+                print synset.name(), synset.definition()
                 ret.append(synset.name())
         ret += q.split(' ')
         return ret
